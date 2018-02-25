@@ -15,3 +15,6 @@ body {
 .navbar-inverse .navbar-brand {
 	color: white;
 }
+img:hover {
+	transform: scale(1.1);
+}
