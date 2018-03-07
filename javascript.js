@@ -2,7 +2,7 @@ var sing = function() {
 
 };
 
-function multiply(a, b){
+function multiply(, b){
 	return a * b
 };
 
