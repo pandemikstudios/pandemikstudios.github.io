@@ -3,6 +3,7 @@ var color1 = document.querySelector(".color1");
 var color2 = document.querySelector(".color2");
 var body = document.getElementById("background")
 
+
 function setGradient(){
 	body.style.background = 
 	"linear-gradient(to right, "
@@ -14,6 +15,9 @@ function setGradient(){
 	css.textContent = body.style.background + ";";
 }
 
+window.onLoad = function(){	
+		css.textContent = body.style.background + ";";
+};
 
 color1.addEventListener("input", setGradient);
 color2.addEventListener("input", setGradient);
