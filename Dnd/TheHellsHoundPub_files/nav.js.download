@@ -1,0 +1,87 @@
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// nav.js
+//
+// copyright (c) 2013-2017 drow <drow@bin.sh>
+// all rights reserved.
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// configuration
+
+  var default_nav = { 'cff1be7f7b27cf1ec2e7be8bcc63df62': 'show' };
+  var span_disclose = '<span class="disclose"></span>';
+  var icon = { 'open': '&#x25be;', 'closed': '&#x25b8;' };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// initialize navigation
+
+  function init_nav () {
+    var state = get_cookie('nav') || default_nav;
+    var page_href = window.location.protocol
+                  + '//' + window.location.hostname
+                  + window.location.pathname;
+
+    $$('.nav-section a').each(function (link) {
+      if (link.href == page_href) {
+        list_id = link.up('div.list').identify();
+        state[list_id] = 'show';
+      }
+    });
+    $$('.nav-section').each(function (section) {
+      var nav_h2 = section.down('h2');
+      var h2_id = nav_h2.identify();
+      var h2_text = span_disclose + nav_h2.innerHTML;
+          nav_h2.update(h2_text);
+      var nav_list = section.down('div.list');
+      var list_id = nav_list.identify();
+
+      if (list_id == 'cff1be7f7b27cf1ec2e7be8bcc63df62') {
+        disclose(nav_h2,'open');
+      } else if (list_id == '317705e402a8529da72a44045db42bf3') {
+        disclose(nav_h2,'open');
+      } else {
+        if (state[list_id] == 'show') {
+          disclose(nav_h2,'open');
+        } else {
+          disclose(nav_h2,'closed');
+          nav_list.hide();
+        }
+        Event.observe(h2_id,'click',toggle_section);
+      }
+    });
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// toggle section
+
+  function toggle_section (event) {
+    if (nav_h2 = event.element()) {
+      if (nav_list = nav_h2.next('div.list')) {
+        var list_id = nav_list.identify();
+        var len = nav_len(nav_list);
+        var effect_opts = { 'duration': (0.05 * len) };
+
+        if (nav_list.visible()) {
+          disclose(nav_h2,'closed');
+          Effect.SlideUp(list_id,effect_opts);
+          set_chip('nav',list_id,'hide');
+        } else {
+          disclose(nav_h2,'open');
+          Effect.SlideDown(list_id,effect_opts);
+          set_chip('nav',list_id,'show');
+        }
+      }
+    }
+  }
+  function nav_len (list) {
+    return list.down('ul').descendants().length;
+  }
+  function disclose (h2, state) {
+    h2.down('span.disclose').update(icon[state]);
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// showtime
+
+  document.observe('dom:loaded',init_nav);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
